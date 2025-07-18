@@ -1,0 +1,13 @@
+# 
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="0; url=/v3/guidelines/dapps/tutorials/web3-game-example">
+    <link rel="canonical" href="/v3/guidelines/dapps/tutorials/web3-game-example" />
+  </head>
+  <script>
+    window.location.href = '/v3/guidelines/dapps/tutorials/web3-game-example' + window.location.search + window.location.hash;
+  </script>
+</html>

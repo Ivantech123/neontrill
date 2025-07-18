@@ -1,0 +1,42 @@
+// Prisma schema for Neon Landing
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String         @id @default(uuid())
+  walletAddr   String         @unique
+  username     String?
+  avatarUrl    String?
+  createdAt    DateTime       @default(now())
+  gameStat     GameStat?
+  stakingStat  StakingStat?
+  referralStat ReferralStat?
+}
+
+model GameStat {
+  userId    String   @id
+  totalWins Int      @default(0)
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model StakingStat {
+  userId     String  @id
+  apr        Float   @default(0)
+  deposited  Float   @default(0)
+  user       User    @relation(fields: [userId], references: [id])
+}
+
+model ReferralStat {
+  userId       String  @id
+  earnings     Float   @default(0)
+  invitedCount Int     @default(0)
+  referralCode String  @unique
+  user         User    @relation(fields: [userId], references: [id])
+}
