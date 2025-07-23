@@ -1,6 +1,10 @@
 # 🎮 Neon Landing - TON Gaming Platform
 
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+
 A modern, full-stack gaming platform built with React, TypeScript, and Express, featuring TON blockchain integration and real-time gaming experiences.
+
+---
 
 ## 🚀 Features
 
@@ -15,6 +19,7 @@ A modern, full-stack gaming platform built with React, TypeScript, and Express, 
 ## 🛠️ Tech Stack
 
 ### Frontend
+
 - **React 18** with TypeScript
 - **Vite** for fast development and building
 - **Tailwind CSS** for styling
@@ -24,6 +29,7 @@ A modern, full-stack gaming platform built with React, TypeScript, and Express, 
 - **React Router** for navigation
 
 ### Backend
+
 - **Express.js** with TypeScript
 - **WebSocket** for real-time communication
 - **JWT** for authentication
@@ -32,36 +38,42 @@ A modern, full-stack gaming platform built with React, TypeScript, and Express, 
 - **CORS** configuration
 
 ### Blockchain
+
 - **TON Connect** for wallet integration
 - **TON SDK** for blockchain interactions
 
 ## 📦 Installation
 
 ### Prerequisites
-- Node.js 18+ 
+
+- Node.js 18+
 - npm or yarn
 - Docker (optional)
 
 ### Quick Start
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd neon-landing
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment**
+
    ```bash
    cp .env.example .env
    # Edit .env with your configuration
    ```
 
 4. **Start development server**
+
    ```bash
    npm run dev
    ```
@@ -70,6 +82,7 @@ A modern, full-stack gaming platform built with React, TypeScript, and Express, 
    Navigate to `http://localhost:8080`
 
 ### Using Setup Script (Linux/macOS)
+
 ```bash
 chmod +x scripts/setup.sh
 ./scripts/setup.sh
@@ -78,6 +91,7 @@ chmod +x scripts/setup.sh
 ## 🏗️ Build & Deploy
 
 ### Development
+
 ```bash
 npm run dev          # Start development server
 npm run typecheck    # Run TypeScript checks
@@ -85,6 +99,7 @@ npm run format.fix   # Format code with Prettier
 ```
 
 ### Production
+
 ```bash
 npm run build        # Build for production
 npm start           # Start production server
@@ -93,6 +108,7 @@ npm start           # Start production server
 ### Docker Deployment
 
 #### Using Docker Compose (Recommended)
+
 ```bash
 docker-compose up -d
 ```
@@ -111,7 +127,7 @@ When you execute `docker compose up`, Docker Compose performs a critical setup s
 
 This creates a self-contained ecosystem where our services can operate securely, isolated from your host machine's network and other Docker projects.
 
---- 
+---
 
 #### 1. Internal Communication: How Services Talk to Each Other
 
@@ -121,32 +137,36 @@ Inside this private network, containers communicate using a powerful feature: **
 
 - **Practical Example (`neon-landing` -> `postgres`)**:
   The `neon-landing` application needs to connect to the database. Its connection string is:
+
   ```
   DATABASE_URL=postgresql://postgres:postgres@postgres:5432/neon_landing?schema=public
   ```
+
   - **`postgres` (as hostname)**: This is not `localhost`. It's the service name of the database container. When the `neon-landing` container makes a request to `postgres`, Docker's DNS says, "I know `postgres`! Its internal IP is `172.x.x.x`." The connection is then established internally.
-  - **`5432` (as port)**: This is the port that the PostgreSQL server is listening on *inside* its container.
+  - **`5432` (as port)**: This is the port that the PostgreSQL server is listening on _inside_ its container.
 
 - **Key Benefit**: This system is incredibly robust. If a container restarts and gets a new internal IP, Docker's DNS automatically updates. Your application code doesn't need to change, as it always refers to the stable service name (`postgres`).
 
---- 
+---
 
 #### 2. External Communication: How You Access the Application
 
 While internal communication is isolated, we need a way to access the web application from the outside world (i.e., your browser).
 
 - **Port Mapping (`ports: ["HOST:CONTAINER"]`)**: This is the bridge between your machine (the host) and the isolated container network. The configuration in `docker-compose.yml`:
+
   ```yaml
   services:
     neon-landing:
       ports:
         - "3000:3000"
   ```
-  - **`3000` (Host Port)**: The first value is the port on your local machine. This is the port you use in your browser (`http://localhost:3000`).
-  - **`3000` (Container Port)**: The second value is the port *inside* the `neon-landing` container that the Express server is bound to.
-  Docker creates a forwarding rule: any network traffic arriving at port `3000` on your machine is instantly routed to port `3000` of the `neon-landing` container.
 
-- **Security by Default**: Notice that the `postgres` service has **no `ports` mapping**. This is intentional. By not exposing port `5432` to the host, we make it impossible to connect to the database from anywhere *except* from within the dedicated Docker network. This is a fundamental security measure to protect your data.
+  - **`3000` (Host Port)**: The first value is the port on your local machine. This is the port you use in your browser (`http://localhost:3000`).
+  - **`3000` (Container Port)**: The second value is the port _inside_ the `neon-landing` container that the Express server is bound to.
+    Docker creates a forwarding rule: any network traffic arriving at port `3000` on your machine is instantly routed to port `3000` of the `neon-landing` container.
+
+- **Security by Default**: Notice that the `postgres` service has **no `ports` mapping**. This is intentional. By not exposing port `5432` to the host, we make it impossible to connect to the database from anywhere _except_ from within the dedicated Docker network. This is a fundamental security measure to protect your data.
 
 #### Data Flow Summary
 
@@ -158,9 +178,16 @@ A typical request follows this path:
 4.  **Prisma Client** (in Express) -> Needs data, sends query to `postgres:5432`.
 5.  **Docker DNS** -> Resolves `postgres` to the database container's internal IP.
 6.  **PostgreSQL Server** (in `postgres` container) -> Receives query, executes it, and returns data back along the same path.
+
 ```bash
 # Build image
 docker build -t neon-landing .
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 # Run container
 docker run -d \
@@ -171,6 +198,7 @@ docker run -d \
 ```
 
 #### Using Scripts (Linux/macOS)
+
 ```bash
 chmod +x scripts/docker-build.sh scripts/docker-run.sh
 ./scripts/docker-build.sh
@@ -223,14 +251,17 @@ neon-landing/
 ## 🎮 API Endpoints
 
 ### Authentication
+
 - `GET /api/v1/auth/challenge` - Get authentication challenge
 - `POST /api/v1/auth/verify` - Verify wallet signature
 
 ### Games
+
 - `GET /api/v1/games` - Get available games
 - `GET /api/v1/stats` - Get game statistics
 
 ### User (Protected)
+
 - `GET /api/v1/user/profile` - Get user profile
 - `GET /api/v1/user/history` - Get game history
 - `GET /api/v1/user/inventory` - Get user inventory
@@ -238,11 +269,13 @@ neon-landing/
 - `POST /api/v1/user/claim-earnings` - Claim earnings
 
 ### Shop
+
 - `GET /api/v1/shop/items` - Get shop items
 - `POST /api/v1/shop/purchase/:itemId` - Purchase item
 - `POST /api/v1/shop/sell/:itemId` - Sell item
 
 ### Roulette
+
 - `GET /api/v1/roulette/seed` - Get provably fair seed
 - `POST /api/v1/roulette/spin` - Spin roulette
 
@@ -258,6 +291,7 @@ neon-landing/
 ## 🎨 UI Components
 
 Built with modern, accessible components:
+
 - **Radix UI**: Accessible primitives
 - **Tailwind CSS**: Utility-first styling
 - **Framer Motion**: Smooth animations
@@ -296,6 +330,7 @@ This project is licensed under the MIT License.
 ## 🆘 Support
 
 For support and questions:
+
 - Create an issue on GitHub
 - Check the documentation
 - Review the API endpoints
