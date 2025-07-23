@@ -3,7 +3,11 @@ import { useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { apiClient } from "@/lib/api";
 
-export function TONLoginButton({ onDisconnect }: { onDisconnect?: () => void }) {
+export function TONLoginButton({
+  onDisconnect,
+}: {
+  onDisconnect?: () => void;
+}) {
   const [tonConnectUI] = useTonConnectUI();
   const wallet = useTonWallet();
   const { login, logout, isAuthenticated } = useAuth();

@@ -184,11 +184,11 @@ export const gameItems: GameItem[] = [
 
 // Helper functions
 export const getItemsByRarity = (rarity: GameItem["rarity"]): GameItem[] => {
-  return gameItems.filter(item => item.rarity === rarity);
+  return gameItems.filter((item) => item.rarity === rarity);
 };
 
 export const getItemById = (id: string): GameItem | undefined => {
-  return gameItems.find(item => item.id === id);
+  return gameItems.find((item) => item.id === id);
 };
 
 export const getTotalDropChance = (): number => {
@@ -198,7 +198,7 @@ export const getTotalDropChance = (): number => {
 export const getRandomItem = (): GameItem => {
   const totalChance = getTotalDropChance();
   const random = Math.random() * totalChance;
-  
+
   let currentChance = 0;
   for (const item of gameItems) {
     currentChance += item.dropChance;
@@ -206,7 +206,7 @@ export const getRandomItem = (): GameItem => {
       return item;
     }
   }
-  
+
   // Fallback to first item if something goes wrong
   return gameItems[0];
 };

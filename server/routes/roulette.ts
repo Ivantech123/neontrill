@@ -1,10 +1,10 @@
 import { Router, RequestHandler } from "express";
 import { authenticateToken, AuthenticatedRequest } from "../utils/auth";
 import { gameItems, GameItem } from "../../shared/gameItems";
-import { 
-  generateServerSeed, 
-  hashSeed, 
-  calculateResult 
+import {
+  generateServerSeed,
+  hashSeed,
+  calculateResult,
 } from "../utils/provablyFair";
 import { gameState } from "../utils/gameState";
 
@@ -49,7 +49,10 @@ const handleSpin: RequestHandler = (req: AuthenticatedRequest, res) => {
     const randomNumber = calculateResult(serverSeed, clientSeed, nonce);
 
     // Определяем выигрышный предмет
-    const totalWeight = gameItems.reduce((sum, item) => sum + item.dropChance, 0);
+    const totalWeight = gameItems.reduce(
+      (sum, item) => sum + item.dropChance,
+      0,
+    );
     const winningWeight = randomNumber % totalWeight;
 
     let currentWeight = 0;
@@ -73,18 +76,17 @@ const handleSpin: RequestHandler = (req: AuthenticatedRequest, res) => {
         req.user.address,
         `roulette-${req.session.id}`,
         "win",
-        winningItem.basePrice
+        winningItem.basePrice,
       );
     }
 
     // Увеличиваем nonce для следующей ставки
     req.session.nonce = (req.session.nonce || 0) + 1;
 
-    res.json({ 
-      item: winningItem, 
-      serverSeed: serverSeed // Возвращаем сид для верификации
+    res.json({
+      item: winningItem,
+      serverSeed: serverSeed, // Возвращаем сид для верификации
     });
-
   } catch (error) {
     console.error("Spin error:", error);
     res.status(500).json({ error: "Internal server error" });

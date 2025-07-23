@@ -6,7 +6,9 @@ import { Address, TonClient4, Cell } from "@ton/ton";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import tonCrypto from "@ton/crypto";
-const { verifySignature } = tonCrypto as { verifySignature: typeof import("@ton/crypto").verifySignature };
+const { verifySignature } = tonCrypto as {
+  verifySignature: typeof import("@ton/crypto").verifySignature;
+};
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-super-secret-jwt-key";
 const APP_DOMAIN = process.env.APP_DOMAIN || "localhost"; //  ВАЖНО: Укажите ваш домен
@@ -22,7 +24,6 @@ setInterval(() => {
     }
   }
 }, 300_000);
-
 
 export interface AuthenticatedRequest extends Request {
   user?: {
@@ -65,11 +66,17 @@ function createMessage(walletAddress: string, proof: TonProof): Buffer {
   ]);
 
   const messageHash = crypto.createHash("sha256").update(message).digest();
-  return Buffer.concat([Buffer.from([0xff, 0xff]), Buffer.from("ton-connect"), messageHash]);
+  return Buffer.concat([
+    Buffer.from([0xff, 0xff]),
+    Buffer.from("ton-connect"),
+    messageHash,
+  ]);
 }
 
 // Верификация подписи
-export async function verifyTONSignature(data: TONWalletAuth): Promise<boolean> {
+export async function verifyTONSignature(
+  data: TONWalletAuth,
+): Promise<boolean> {
   try {
     // 1. Проверка timestamp (не более 5 минут)
     if (Date.now() / 1000 - data.proof.timestamp > 300) {
@@ -84,13 +91,23 @@ export async function verifyTONSignature(data: TONWalletAuth): Promise<boolean> 
     }
 
     // 3. Получаем публичный ключ из контракта
-    const client = new TonClient4({ endpoint: "https://mainnet-v4.tonhubapi.com" });
+    const client = new TonClient4({
+      endpoint: "https://mainnet-v4.tonhubapi.com",
+    });
     const lastBlock = await client.getLastBlock();
-    const result = await client.runMethod(lastBlock.last.seqno, Address.parse(data.address), 'get_public_key', []);
-    const publicKeyFromContract = Buffer.from(result.reader.readBigNumber().toString(16).padStart(64, '0'), 'hex');
+    const result = await client.runMethod(
+      lastBlock.last.seqno,
+      Address.parse(data.address),
+      "get_public_key",
+      [],
+    );
+    const publicKeyFromContract = Buffer.from(
+      result.reader.readBigNumber().toString(16).padStart(64, "0"),
+      "hex",
+    );
 
     // 4. Сравниваем с ключом, предоставленным клиентом
-    if (!publicKeyFromContract.equals(Buffer.from(data.publicKey, 'hex'))) {
+    if (!publicKeyFromContract.equals(Buffer.from(data.publicKey, "hex"))) {
       console.error("Public key mismatch");
       return false;
     }
@@ -114,7 +131,6 @@ export async function verifyTONSignature(data: TONWalletAuth): Promise<boolean> 
       usedProofCache.set(sigBase64, now);
     }
     return isValid;
-
   } catch (error) {
     console.error("Signature verification failed:", error);
     return false;

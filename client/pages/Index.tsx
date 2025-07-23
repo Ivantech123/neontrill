@@ -197,7 +197,6 @@ export default function Index() {
           </div>
         </Card>
 
-
         {/* Game Actions */}
         <div
           className={`grid grid-cols-2 gap-4 ${animateCards ? "bounce-in" : "opacity-0"}`}
@@ -242,8 +241,6 @@ export default function Index() {
             </Button>
           </div>
         )}
-
-
 
         {/* Enhanced Referral Section */}
         <div

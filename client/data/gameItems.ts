@@ -1,6 +1,12 @@
 // Re-export from shared
 export type { GameItem } from "../../shared/gameItems";
-export { gameItems, getItemsByRarity, getItemById, getTotalDropChance, getRandomItem } from "../../shared/gameItems";
+export {
+  gameItems,
+  getItemsByRarity,
+  getItemById,
+  getTotalDropChance,
+  getRandomItem,
+} from "../../shared/gameItems";
 
 // Additional client-specific utility functions
 export function getRarityColor(rarity: string): string {

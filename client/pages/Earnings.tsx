@@ -71,7 +71,10 @@ export default function Earnings() {
           <p className="text-gray-400 mb-6">
             Connect your wallet to view your earnings
           </p>
-          <Button onClick={connectWallet} className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-2xl px-8 py-3">
+          <Button
+            onClick={connectWallet}
+            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-2xl px-8 py-3"
+          >
             Connect Wallet
           </Button>
         </div>

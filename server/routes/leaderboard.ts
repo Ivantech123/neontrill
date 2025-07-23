@@ -13,20 +13,22 @@ interface LeaderboardEntry {
 import { prisma } from "../utils/prisma";
 
 // Fetch leaderboard aggregated from DB
-const mockUsers: LeaderboardEntry[] = Array.from({ length: 100 }).map((_, i) => {
-  const wins = Math.floor(Math.random() * 1000);
-  const apr = parseFloat((Math.random() * 100).toFixed(2));
-  const ref = parseFloat((Math.random() * 500).toFixed(2));
-  return {
-    userId: `user${i + 1}`,
-    username: `Player${i + 1}`,
-    avatarUrl: undefined,
-    totalWins: wins,
-    stakingApr: apr,
-    referralEarnings: ref,
-    totalScore: wins + apr + ref,
-  };
-});
+const mockUsers: LeaderboardEntry[] = Array.from({ length: 100 }).map(
+  (_, i) => {
+    const wins = Math.floor(Math.random() * 1000);
+    const apr = parseFloat((Math.random() * 100).toFixed(2));
+    const ref = parseFloat((Math.random() * 500).toFixed(2));
+    return {
+      userId: `user${i + 1}`,
+      username: `Player${i + 1}`,
+      avatarUrl: undefined,
+      totalWins: wins,
+      stakingApr: apr,
+      referralEarnings: ref,
+      totalScore: wins + apr + ref,
+    };
+  },
+);
 
 async function getLeaderboard(limit: number): Promise<LeaderboardEntry[]> {
   const rows = await prisma.user.findMany({
@@ -46,11 +48,13 @@ async function getLeaderboard(limit: number): Promise<LeaderboardEntry[]> {
       stakingApr: u.stakingStat?.apr || 0,
       referralEarnings: u.referralStat?.earnings || 0,
       totalScore:
-        (u.gameStat?.totalWins || 0) + (u.stakingStat?.apr || 0) + (u.referralStat?.earnings || 0),
+        (u.gameStat?.totalWins || 0) +
+        (u.stakingStat?.apr || 0) +
+        (u.referralStat?.earnings || 0),
     }))
     .sort((a, b) => b.totalScore - a.totalScore)
     .slice(0, limit)
-    .map((entry, idx) => ({ ...entry, rank: idx + 1 } as any));
+    .map((entry, idx) => ({ ...entry, rank: idx + 1 }) as any);
 }
 
 const router = Router();

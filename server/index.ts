@@ -6,7 +6,13 @@ import session from "express-session";
 import { handleDemo } from "./routes/demo";
 import { handleVerifyWallet, handleGetChallenge } from "./routes/auth";
 import { handleGetGames, handleGetStats } from "./routes/games";
-import { handleGetUserHistory, handleGetUserProfile, handleGetUserInventory, handleGetUserEarnings, handleClaimEarnings } from "./routes/user";
+import {
+  handleGetUserHistory,
+  handleGetUserProfile,
+  handleGetUserInventory,
+  handleGetUserEarnings,
+  handleClaimEarnings,
+} from "./routes/user";
 import shopRoutes from "./routes/shop";
 import rouletteRoutes from "./routes/roulette";
 import leaderboardRoutes from "./routes/leaderboard";
@@ -19,8 +25,17 @@ export function createServer() {
   // Custom Content Security Policy
   const cspDirectives: helmet.ContentSecurityPolicyOptions["directives"] = {
     defaultSrc: ["'self'"],
-    connectSrc: ["'self'", "https://raw.githubusercontent.com", "https://ton.org"],
-    imgSrc: ["'self'", "data:", "https://static.tonapi.io", "https://wallet.tg"],
+    connectSrc: [
+      "'self'",
+      "https://raw.githubusercontent.com",
+      "https://ton.org",
+    ],
+    imgSrc: [
+      "'self'",
+      "data:",
+      "https://static.tonapi.io",
+      "https://wallet.tg",
+    ],
   };
 
   app.use(
@@ -39,7 +54,11 @@ export function createServer() {
   app.use(
     cors({
       origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes("*") || allowedOrigins.includes(origin)) {
+        if (
+          !origin ||
+          allowedOrigins.includes("*") ||
+          allowedOrigins.includes(origin)
+        ) {
           callback(null, true);
         } else {
           callback(new Error("Not allowed by CORS"));
@@ -68,7 +87,7 @@ export function createServer() {
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000, // 24 часа
       },
-    })
+    }),
   );
 
   // Middleware
@@ -96,7 +115,11 @@ export function createServer() {
   app.get("/api/v1/user/profile", authenticateToken, handleGetUserProfile);
   app.get("/api/v1/user/inventory", authenticateToken, handleGetUserInventory);
   app.get("/api/v1/user/earnings", authenticateToken, handleGetUserEarnings);
-  app.post("/api/v1/user/claim-earnings", authenticateToken, handleClaimEarnings);
+  app.post(
+    "/api/v1/user/claim-earnings",
+    authenticateToken,
+    handleClaimEarnings,
+  );
 
   // Shop routes
   app.use("/api/v1/shop", shopRoutes);

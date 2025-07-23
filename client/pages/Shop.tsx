@@ -38,7 +38,11 @@ export default function Shop() {
   const [searchQuery, setSearchQuery] = useState("");
 
   // Fetch shop items from the API with fallback to local data
-  const { data: apiShopItems, isLoading, error } = useQuery({
+  const {
+    data: apiShopItems,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["shopItems"],
     queryFn: () => apiClient.getShopItems(),
     retry: 1,
@@ -74,7 +78,8 @@ export default function Shop() {
 
   const filteredItems = (shopItems || []).filter((item) => {
     const matchesFilter =
-      selectedFilter === "all" || item.rarity.toLowerCase() === selectedFilter.toLowerCase();
+      selectedFilter === "all" ||
+      item.rarity.toLowerCase() === selectedFilter.toLowerCase();
     const matchesSearch = item.name
       .toLowerCase()
       .includes(searchQuery.toLowerCase());
@@ -183,7 +188,11 @@ export default function Shop() {
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                 <div className="transform transition-transform duration-300 group-hover:scale-110 relative z-10">
                   {item.imageUrl ? (
-                    <img src={item.imageUrl} alt={item.name} className="w-16 h-16 object-contain mx-auto" />
+                    <img
+                      src={item.imageUrl}
+                      alt={item.name}
+                      className="w-16 h-16 object-contain mx-auto"
+                    />
                   ) : (
                     <span className="text-4xl">{item.emoji}</span>
                   )}
@@ -255,9 +264,10 @@ export default function Shop() {
             className={`pt-4 ${animateCards ? "bounce-in" : "opacity-0"}`}
             style={{ animationDelay: "0.6s" }}
           >
-            <Button 
+            <Button
               onClick={() => tonConnectUI.openModal()}
-              className="w-full bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-500 hover:from-blue-700 hover:via-purple-700 hover:to-cyan-600 text-white py-6 text-lg font-bold rounded-3xl flex items-center justify-center space-x-3 h-16 shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 hover:scale-105 relative overflow-hidden group">
+              className="w-full bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-500 hover:from-blue-700 hover:via-purple-700 hover:to-cyan-600 text-white py-6 text-lg font-bold rounded-3xl flex items-center justify-center space-x-3 h-16 shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 hover:scale-105 relative overflow-hidden group"
+            >
               <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
               <Wallet className="h-6 w-6 relative z-10" />
               <span className="relative z-10">Connect Wallet to Shop</span>

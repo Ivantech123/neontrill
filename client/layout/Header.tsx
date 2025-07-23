@@ -137,7 +137,6 @@ export function Header({ title, showBackButton, onBack }: HeaderProps) {
                           <LogOut className="h-4 w-4 mr-3" />
                           Disconnect
                         </Button>
-                        
                       </div>
                     </div>
                   </Card>

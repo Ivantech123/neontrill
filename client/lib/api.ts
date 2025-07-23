@@ -186,7 +186,7 @@ class ApiClient {
 
   async spinRoulette(
     clientSeed: string,
-    rollCount: number
+    rollCount: number,
   ): Promise<{ item: GameItem; serverSeed: string }> {
     return this.request("/roulette/spin", {
       method: "POST",
@@ -222,8 +222,6 @@ class ApiClient {
       method: "POST",
     });
   }
-
-  
 
   isAuthenticated(): boolean {
     return !!this.token;

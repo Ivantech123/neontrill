@@ -32,9 +32,7 @@ export function MainLayout({
 
       {/* Main Content */}
       <main className="w-full max-w-md mx-auto relative z-10 pb-24 min-h-screen">
-        <div className="relative z-20">
-          {children}
-        </div>
+        <div className="relative z-20">{children}</div>
       </main>
 
       {/* Bottom Navigation */}

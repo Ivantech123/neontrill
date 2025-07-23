@@ -48,17 +48,18 @@ export default function Rolls() {
   const [spinDuration, setSpinDuration] = useState(4000);
 
   // Game server WebSocket connection
-  const {
-    isConnected,
-    sendEvent,
-    connectionError,
-    reconnect,
-  } = useGameSocket();
+  const { isConnected, sendEvent, connectionError, reconnect } =
+    useGameSocket();
 
   // Provably Fair state
-  const [clientSeed, setClientSeed] = useState('');
+  const [clientSeed, setClientSeed] = useState("");
   const [serverSeedHash, setServerSeedHash] = useState<string | null>(null);
-  const [lastSpinResult, setLastSpinResult] = useState<{ item: GameItem; serverSeed: string; clientSeed: string; nonce: number } | null>(null);
+  const [lastSpinResult, setLastSpinResult] = useState<{
+    item: GameItem;
+    serverSeed: string;
+    clientSeed: string;
+    nonce: number;
+  } | null>(null);
   const [nonce, setNonce] = useState(0);
 
   // Fetch game stats
@@ -106,7 +107,9 @@ export default function Rolls() {
 
       // Animate wheel
       const segmentAngle = 360 / gameItems.length;
-      const winningIndex = gameItems.findIndex((item) => item.id === winningItem.id);
+      const winningIndex = gameItems.findIndex(
+        (item) => item.id === winningItem.id,
+      );
       if (winningIndex === -1) {
         toast.error("Winning item not found!");
         setIsSpinning(false);
@@ -140,7 +143,8 @@ export default function Rolls() {
   const spinWheel = useCallback(() => {
     if (isSpinning || !isAuthenticated || !serverSeedHash) {
       if (!isAuthenticated) toast.error("Please connect your wallet first");
-      if (!serverSeedHash) toast.error("Game server connection error. Please refresh.");
+      if (!serverSeedHash)
+        toast.error("Game server connection error. Please refresh.");
       return;
     }
     setIsSpinning(true);
@@ -173,7 +177,10 @@ export default function Rolls() {
               Connect your TON wallet to start spinning and winning amazing
               prizes!
             </p>
-            <Button onClick={connectWallet} className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-2xl font-bold">
+            <Button
+              onClick={connectWallet}
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-2xl font-bold"
+            >
               Connect Wallet
             </Button>
           </Card>
@@ -396,11 +403,13 @@ export default function Rolls() {
           <div className="space-y-2 text-gray-400">
             <div>
               <p>Server Seed Hash (revealed after spin):</p>
-              <p className="font-mono text-white truncate">{serverSeedHash || 'Not available'}</p>
+              <p className="font-mono text-white truncate">
+                {serverSeedHash || "Not available"}
+              </p>
             </div>
             <div>
               <p>Your Client Seed (you can change this):</p>
-              <input 
+              <input
                 type="text"
                 value={clientSeed}
                 onChange={(e) => setClientSeed(e.target.value)}
@@ -410,9 +419,24 @@ export default function Rolls() {
             {lastSpinResult && (
               <div className="pt-2 border-t border-gray-700/50">
                 <h4 className="font-bold text-white">Last Spin Verification</h4>
-                <p>Nonce: <span className="font-mono text-white">{lastSpinResult.nonce}</span></p>
-                <p>Server Seed: <span className="font-mono text-white truncate">{lastSpinResult.serverSeed}</span></p>
-                <p>Result: <span className="font-mono text-white">{lastSpinResult.item.name}</span></p>
+                <p>
+                  Nonce:{" "}
+                  <span className="font-mono text-white">
+                    {lastSpinResult.nonce}
+                  </span>
+                </p>
+                <p>
+                  Server Seed:{" "}
+                  <span className="font-mono text-white truncate">
+                    {lastSpinResult.serverSeed}
+                  </span>
+                </p>
+                <p>
+                  Result:{" "}
+                  <span className="font-mono text-white">
+                    {lastSpinResult.item.name}
+                  </span>
+                </p>
                 {/* TODO: Add a button to trigger client-side verification */}
               </div>
             )}

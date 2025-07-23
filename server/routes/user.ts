@@ -100,7 +100,7 @@ export const handleGetUserEarnings: RequestHandler = (
     const { period = "7d" } = req.query;
     const balance = gameState.getUserBalance(req.user.address);
     const history = gameState.getUserHistory(req.user.address);
-    
+
     const totalWinnings = history
       .filter((h) => h.result === "win")
       .reduce((sum, h) => sum + h.amount, 0);
@@ -146,7 +146,7 @@ export const handleClaimEarnings: RequestHandler = (
 
     // TODO: Implement actual claim logic
     const claimAmount = 1.5; // Mock amount
-    
+
     res.json({
       amount: claimAmount,
       success: true,

@@ -143,8 +143,6 @@ class GameStateManager {
       game.winner = game.players[winnerIndex];
       game.winnings = game.pot * 0.9; // 90% to winner, 10% house fee
 
-      
-
       // Update history and balances
       game.players.forEach((player) => {
         const isWinner = player.address === game.winner!.address;
@@ -202,7 +200,12 @@ class GameStateManager {
     return newBalance;
   }
 
-  addHistoryEntry(address: string, gameId: string, result: "win" | "loss", amount: number) {
+  addHistoryEntry(
+    address: string,
+    gameId: string,
+    result: "win" | "loss",
+    amount: number,
+  ) {
     this.gameHistory.push({
       gameId,
       result,
@@ -216,8 +219,6 @@ class GameStateManager {
   getUserHistory(address: string): GameHistory[] {
     return this.gameHistory.filter((h) => h.address === address);
   }
-
-  
 
   getGlobalStats(): GlobalStats {
     // Update active players count

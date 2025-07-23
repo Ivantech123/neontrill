@@ -11,10 +11,13 @@ export function useBackendAuth() {
 
   useEffect(() => {
     const refreshPayload = async () => {
-      tonConnectUI.setConnectRequestParameters({ state: 'loading' });
+      tonConnectUI.setConnectRequestParameters({ state: "loading" });
       try {
         const { payload } = await apiClient.getChallenge();
-        tonConnectUI.setConnectRequestParameters({ state: 'ready', value: { tonProof: payload } });
+        tonConnectUI.setConnectRequestParameters({
+          state: "ready",
+          value: { tonProof: payload },
+        });
       } catch (error) {
         tonConnectUI.setConnectRequestParameters(null);
         console.error("Failed to get challenge", error);
@@ -23,17 +26,22 @@ export function useBackendAuth() {
 
     if (wallet) {
       clearInterval(interval.current);
-      if (wallet.connectItems?.tonProof && !('error' in wallet.connectItems.tonProof)) {
+      if (
+        wallet.connectItems?.tonProof &&
+        !("error" in wallet.connectItems.tonProof)
+      ) {
         const authData: TONWalletAuth = {
           address: wallet.account.address,
           publicKey: wallet.account.publicKey,
           walletStateInit: wallet.account.walletStateInit,
           proof: {
             ...wallet.connectItems.tonProof.proof,
-            timestamp: wallet.connectItems.tonProof.proof.timestamp
-          }
+            timestamp: wallet.connectItems.tonProof.proof.timestamp,
+          },
         };
-        apiClient.verifyWallet(authData).catch(e => console.error("Verification failed", e));
+        apiClient
+          .verifyWallet(authData)
+          .catch((e) => console.error("Verification failed", e));
       } else {
         // Handle error or disconnection
         apiClient.clearToken();
