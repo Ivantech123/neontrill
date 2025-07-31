@@ -13,3 +13,9 @@
   from = "/api/*"
   status = 200
   to = "/.netlify/functions/api/:splat"
+
+# Disable caching for manifest so updates propagate immediately
+[[headers]]
+  for = "/tonconnect-manifest.json"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
