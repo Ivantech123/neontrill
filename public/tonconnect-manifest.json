@@ -1,7 +1,7 @@
 {
-  "url": "http://localhost:5173",
+  "url": "https://neontrill.windsurf.build",
   "name": "Neon Landing",
-  "iconUrl": "http://localhost:5173/icon-192x192.png",
-  "termsOfUseUrl": "http://localhost:5173/terms",
-  "privacyPolicyUrl": "http://localhost:5173/privacy"
+  "iconUrl": "https://neontrill.windsurf.build/icon-192x192.png",
+  "termsOfUseUrl": "https://neontrill.windsurf.build/terms",
+  "privacyPolicyUrl": "https://neontrill.windsurf.build/privacy"
 }
